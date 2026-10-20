@@ -97,4 +97,1963 @@
       letter-spacing: -0.5px;
     }
 
-    .profile-list {... (Còn 17 KB)
+    .profile-list {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .profile-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      group: true;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-item:hover {
+      transform: translateY(-6px);
+    }
+
+    .profile-avatar {
+      width: clamp(110px, 14vw, 155px);
+      height: clamp(110px, 14vw, 155px);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid transparent;
+      transition: all 0.25s ease;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .profile-item:hover .profile-avatar {
+      border-color: #fff;
+      box-shadow: 0 0 25px rgba(255, 77, 141, 0.5);
+    }
+
+    .avatar-pink {
+      background: linear-gradient(135deg, #ff4d8d 0%, #c9184a 100%);
+    }
+    .avatar-rose {
+      background: linear-gradient(135deg, #e50914 0%, #800f2f 100%);
+    }
+    .avatar-gold {
+      background: linear-gradient(135deg, #ff9ebb 0%, #ff4d8d 100%);
+    }
+
+    .profile-name {
+      margin-top: 14px;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      transition: color 0.25s ease;
+      font-weight: 500;
+    }
+
+    .profile-item:hover .profile-name {
+      color: #fff;
+    }
+
+    .gate-hint {
+      color: #888;
+      font-size: 0.9rem;
+      border: 1px solid #444;
+      padding: 10px 24px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .gate-hint:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    /* ==========================================
+       2. NETFLIX INTRO ANIMATION SCREEN
+       ========================================== */
+    #netflix-intro {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #netflix-intro.active {
+      display: flex;
+    }
+
+    .intro-logo-wrap {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: netflixZoom 3.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .intro-word {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 9.5rem);
+      color: var(--netflix-red);
+      letter-spacing: 12px;
+      text-shadow:
+        0 0 20px rgba(229, 9, 20, 0.8),
+        0 0 60px rgba(229, 9, 20, 0.5),
+        4px 4px 0px #7a0309;
+      position: relative;
+    }
+
+    .intro-sub {
+      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      letter-spacing: 8px;
+      color: #ffb3c6;
+      text-transform: uppercase;
+      margin-top: -8px;
+      opacity: 0;
+      animation: subFade 2.2s ease 0.4s forwards;
+    }
+
+    /* Light streak spectrum effect */
+    #intro-streaks {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      animation: streaksAppear 3.6s ease forwards;
+    }
+
+    @keyframes netflixZoom {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+        filter: brightness(0.5);
+      }
+      18% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1.2);
+      }
+      55% {
+        transform: scale(1.08);
+        opacity: 1;
+        filter: brightness(1.4);
+      }
+      85% {
+        transform: scale(8);
+        opacity: 0.9;
+        filter: blur(2px) brightness(2);
+      }
+      100% {
+        transform: scale(18);
+        opacity: 0;
+      }
+    }
+
+    @keyframes subFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      40% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes streaksAppear {
+      0%, 50% { opacity: 0; transform: scaleY(0.8); }
+      72% { opacity: 1; transform: scaleY(1.2) scaleX(1.1); }
+      100% { opacity: 0; transform: scaleY(2) scaleX(2.5); }
+    }
+
+    /* ==========================================
+       3. MAIN DASHBOARD (NETFLIX 1:1 UI)
+       ========================================== */
+    #app {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    #app.visible {
+      opacity: 1;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      padding: 0 4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0));
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .navbar.scrolled {
+      background-color: #141414;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .brand-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.3rem;
+      color: var(--netflix-red);
+      letter-spacing: 2.5px;
+      cursor: pointer;
+      text-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-logo span {
+      font-size: 0.75rem;
+      background: var(--pink-accent);
+      color: #fff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 22px;
+    }
+
+    .nav-links li a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      transition: color 0.25s;
+      cursor: pointer;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-btn-icon {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      position: relative;
+      padding: 6px;
+      transition: transform 0.2s;
+    }
+
+    .nav-btn-icon:hover {
+      transform: scale(1.12);
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 8px;
+      height: 8px;
+      background: var(--netflix-red);
+      border-radius: 50%;
+    }
+
+    .replay-intro-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .replay-intro-btn:hover {
+      background: var(--netflix-red);
+      border-color: var(--netflix-red);
+    }
+
+    .nav-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #ff4d8d, #e50914);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    /* Hero Banner (Billboard) */
+    .hero {
+      position: relative;
+      height: 86vh;
+      min-height: 560px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 4%;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1920&q=85');
+      background-size: cover;
+      background-position: center 30%;
+      filter: brightness(0.72);
+      transform: scale(1.03);
+      animation: slowPan 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes slowPan {
+      0% { transform: scale(1.02) translate(0, 0); }
+      100% { transform: scale(1.1) translate(-1%, -1%); }
+    }
+
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(77deg, rgba(20,20,20,0.92) 0%, rgba(20,20,20,0.55) 45%, rgba(20,20,20,0) 85%),
+        linear-gradient(to top, #141414 5%, rgba(20,20,20,0) 35%);
+    }
+
+    #hero-petals {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 640px;
+      margin-top: 40px;
+    }
+
+    .netflix-series-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 0.85rem;
+      color: #e5e5e5;
+      margin-bottom: 12px;
+    }
+
+    .netflix-series-badge strong {
+      font-family: 'Bebas Neue', sans-serif;
+      color: var(--netflix-red);
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      line-height: 0.98;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      text-shadow: 2px 4px 16px rgba(0,0,0,0.8);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .match-score {
+      color: var(--match-green);
+      font-weight: 700;
+    }
+
+    .meta-badge {
+      border: 1px solid rgba(255,255,255,0.4);
+      padding: 1px 7px;
+      font-size: 0.78rem;
+      border-radius: 3px;
+      color: #ddd;
+    }
+
+    .top10-pill {
+      background: var(--netflix-red);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 3px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.3vw, 1.12rem);
+      line-height: 1.6;
+      color: #e5e5e5;
+      margin-bottom: 28px;
+      text-shadow: 1px 2px 6px rgba(0,0,0,0.9);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-play, .btn-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border-radius: 4px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-play {
+      background: #fff;
+      color: #000;
+    }
+
+    .btn-play:hover {
+      background: rgba(255, 255, 255, 0.82);
+      transform: scale(1.03);
+    }
+
+    .btn-info {
+      background: rgba(109, 109, 110, 0.7);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-info:hover {
+      background: rgba(109, 109, 110, 0.45);
+      transform: scale(1.03);
+    }
+
+    /* ==========================================
+       4. BOUQUET ROWS (NETFLIX CAROUSELS)
+       ========================================== */
+    .rows-container {
+      position: relative;
+      z-index: 10;
+      margin-top: -90px;
+      display: flex;
+      flex-direction: column;
+      gap: 42px;
+    }
+
+    .row-section {
+      padding: 0 4%;
+    }
+
+    .row-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .row-title {
+      font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+      font-weight: 700;
+      color: #e5e5e5;
+      transition: color 0.2s;
+    }
+
+    .row-section:hover .row-title {
+      color: #fff;
+    }
+
+    .row-explore {
+      font-size: 0.82rem;
+      color: #54b9c5;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: all 0.3s ease;
+    }
+
+    .row-section:hover .row-explore {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .row-slider {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    /* Bouquet Card */
+    .bouquet-card {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.35s ease, z-index 0s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+    }
+
+    .bouquet-card:hover {
+      transform: scale(1.08) translateY(-6px);
+      z-index: 30;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.85), 0 0 20px rgba(255, 77, 141, 0.28);
+    }
+
+    .card-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2b131d, #1a1a2e);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .bouquet-card:hover .card-thumb {
+      transform: scale(1.1);
+    }
+
+    .card-badge-corner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(229, 9, 20, 0.92);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    .card-episode-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #ffd166;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-body {
+      padding: 14px;
+      background: linear-gradient(to bottom, #1f1f1f, #181818);
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .action-left {
+      display: flex;
+      gap: 8px;
+    }
+
+    .circle-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      background: rgba(42,42,42,0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+
+    .circle-btn.play-mini {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .bouquet-card:hover .circle-btn:hover {
+      border-color: #fff;
+      transform: scale(1.12);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .card-submeta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      margin-bottom: 8px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .card-tags span:not(:last-child)::after {
+      content: " • ";
+      color: #555;
+      margin-left: 4px;
+    }
+
+    /* Top 10 Numbered Style */
+    .top10-card-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 48px;
+    }
+
+    .top10-Rank {
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 7.2rem;
+      line-height: 0.8;
+      color: #141414;
+      -webkit-text-stroke: 3px #595959;
+      z-index: 1;
+      pointer-events: none;
+      transition: -webkit-text-stroke 0.3s ease;
+    }
+
+    .top10-card-wrap:hover .top10-Rank {
+      -webkit-text-stroke: 3px var(--netflix-red);
+    }
+
+    .top10-card-wrap .bouquet-card {
+      width: 100%;
+      z-index: 2;
+    }
+
+    /* ==========================================
+       5. CUTE ANIMATED MODAL (NETFLIX POPUP)
+       ========================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      z-index: 5000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      position: relative;
+      width: 100%;
+      max-width: 820px;
+      background: var(--bg-modal);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 40px rgba(255, 77, 141, 0.22);
+      transform: scale(0.88) translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #181818;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--netflix-red);
+      border-color: var(--netflix-red);
+      transform: rotate(90deg);
+    }
+
+    /* Cute Animation Stage inside Modal Header */
+    .modal-hero {
+      position: relative;
+      height: 370px;
+      width: 100%;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .modal-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.65);
+      transition: transform 6s ease;
+    }
+
+    .modal-backdrop.open .modal-hero-img {
+      transform: scale(1.08);
+    }
+
+    .modal-hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, #181818 6%, rgba(24,24,24,0.3) 50%, rgba(0,0,0,0.3) 100%);
+    }
+
+    /* Cute Floating Character / Blooming Bouquet Widget */
+    .cute-animation-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .cute-bouquet-avatar {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,219,232,0.92) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.4rem;
+      box-shadow: 0 0 35px rgba(255, 77, 141, 0.8), 0 0 70px rgba(255, 209, 102, 0.5);
+      animation: cuteBounce 2.4s ease-in-out infinite;
+      position: relative;
+    }
+
+    .cute-bouquet-avatar::after {
+      content: "✨";
+      position: absolute;
+      top: -8px;
+      right: -6px;
+      font-size: 1.8rem;
+      animation: twinkle 1.4s ease-in-out infinite alternate;
+    }
+
+    .cute-bouquet-avatar::before {
+      content: "💖";
+      position: absolute;
+      bottom: -4px;
+      left: -8px;
+      font-size: 1.6rem;
+      animation: twinkle 1.6s ease-in-out 0.4s infinite alternate;
+    }
+
+    @keyframes cuteBounce {
+      0%, 100% { transform: translateY(0) scale(1) rotate(-3deg); }
+      50% { transform: translateY(-14px) scale(1.07) rotate(3deg); }
+    }
+
+    @keyframes twinkle {
+      0% { transform: scale(0.8) rotate(-10deg); opacity: 0.7; }
+      100% { transform: scale(1.25) rotate(12deg); opacity: 1; }
+    }
+
+    .cute-floating-hearts {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .floating-item {
+      position: absolute;
+      bottom: -30px;
+      font-size: 1.4rem;
+      animation: floatUp 4s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.7) rotate(0deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.95;
+      }
+      80% {
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(-340px) scale(1.2) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    .modal-hero-bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 32px;
+      right: 32px;
+      z-index: 8;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      letter-spacing: 1.5px;
+      line-height: 1;
+      text-shadow: 0 3px 14px rgba(0,0,0,0.9);
+    }
+
+    .modal-subtitle-badge {
+      display: inline-block;
+      background: rgba(255, 77, 141, 0.25);
+      border: 1px solid var(--pink-accent);
+      color: #ffb3c6;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    /* Modal Body & Wish Card */
+    .modal-body {
+      padding: 8px 32px 32px;
+    }
+
+    .wish-letter-card {
+      background: linear-gradient(135deg, rgba(255, 77, 141, 0.12) 0%, rgba(229, 9, 20, 0.08) 100%);
+      border: 1px solid rgba(255, 77, 141, 0.35);
+      border-radius: 12px;
+      padding: 24px 26px;
+      margin: 16px 0 24px;
+      position: relative;
+      box-shadow: inset 0 0 25px rgba(255, 77, 141, 0.08);
+    }
+
+    .wish-quote-mark {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--gold-accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wish-content-text {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .wish-signature {
+      margin-top: 14px;
+      text-align: right;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.35rem;
+      color: #ff8fab;
+    }
+
+    .modal-actions-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .btn-love-burst {
+      background: linear-gradient(135deg, #e50914, #ff4d8d);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(229, 9, 20, 0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-love-burst:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(255, 77, 141, 0.65);
+    }
+
+    .btn-next-wish {
+      background: #2a2a2a;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-next-wish:hover {
+      background: #383838;
+      border-color: #fff;
+    }
+
+    /* Episode List inside Modal */
+    .episodes-header {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .episode-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .episode-item:hover {
+      background: #242424;
+    }
+
+    .ep-num {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #888;
+      width: 28px;
+      text-align: center;
+    }
+
+    .ep-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: rgba(255, 77, 141, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .ep-info {
+      flex: 1;
+    }
+
+    .ep-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+      color: #fff;
+    }
+
+    .ep-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .ep-duration {
+      font-size: 0.8rem;
+      color: #aaa;
+      font-weight: 600;
+    }
+
+    /* Notification Toast */
+    .toast-notif {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1f1f1f;
+      border-left: 4px solid var(--netflix-red);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 6px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      z-index: 8000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s ease;
+    }
+
+    .toast-notif.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 70px;
+      padding: 40px 4% 20px;
+      border-top: 1px solid #222;
+      color: #777;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        height: 75vh;
+      }
+      .rows-container {
+        margin-top: -40px;
+      }
+      .modal-hero {
+        height: 290px;
+      }
+      .modal-body {
+        padding: 8px 18px 24px;
+      }
+      .modal-hero-bottom {
+        left: 18px;
+        right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       1. PROFILE SELECTION ("WHO'S WATCHING?")
+       ========================================== -->
+  <div id="profile-gate">
+    <div class="gate-logo">LOVEFLIX</div>
+    <h1 class="gate-title">Ai đang đón nhận yêu thương ngày 20/10?</h1>
+    <div class="profile-list">
+      <div class="profile-item" onclick="startNetflixExperience('Người Phụ Nữ Tuyệt Vời')">
+        <div class="profile-avatar avatar-pink">🌸</div>
+        <span class="profile-name">Phái Đẹp Tuyệt Vời</span>
+      </div>
+      <div class="profile-item" onclick="startNetflixExperience('Nàng Thơ Rạng Rỡ')">
+        <div class="profile-avatar avatar-rose">🌷</div>
+        <span class="profile-name">Nàng Thơ Rạng Rỡ</span>
+      </div>
+      <div class="profile-item" onclick="startNetflixExperience('Người Đặc Biệt Nhất')">
+        <div class="profile-avatar avatar-gold">👑</div>
+        <span class="profile-name">Nữ Hoàng Hạnh Phúc</span>
+      </div>
+    </div>
+    <div class="gate-hint" onclick="startNetflixExperience('Người Phụ Nữ Tuyệt Vời')">
+      ▶ Nhấn vào hồ sơ bất kỳ để bắt đầu Intro Netflix
+    </div>
+  </div>
+
+  <!-- ==========================================
+       2. NETFLIX INTRO ANIMATION
+       ========================================== -->
+  <div id="netflix-intro">
+    <div class="intro-logo-wrap">
+      <div class="intro-word">LOVEFLIX</div>
+      <div class="intro-sub">HAPPY WOMEN'S DAY 20 • 10</div>
+    </div>
+    <canvas id="intro-streaks"></canvas>
+  </div>
+
+  <!-- ==========================================
+       3. MAIN NETFLIX 1:1 DASHBOARD
+       ========================================== -->
+  <div id="app">
+    <!-- Sticky Header -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-left">
+        <div class="brand-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+          LOVEFLIX <span>20/10</span>
+        </div>
+        <ul class="nav-links">
+          <li><a class="active" onclick="scrollToRow('hero-sec')">Trang chủ</a></li>
+          <li><a onclick="scrollToRow('row-trending')">Hoa Thịnh Hành</a></li>
+          <li><a onclick="scrollToRow('row-top10')">Top 10 Yêu Thương</a></li>
+          <li><a onclick="scrollToRow('row-special')">Bộ Sưu Tập Ngọt Ngào</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <button class="replay-intro-btn" onclick="replayIntro()" title="Xem lại hiệu ứng Intro Netflix">
+          🎬 Phát lại Intro
+        </button>
+        <button class="nav-btn-icon" onclick="showToast('💌 Thông báo mới: Chúc bạn một ngày 20/10 ngập tràn hoa và nụ cười!')">
+          🔔<span class="notif-dot"></span>
+        </button>
+        <div class="nav-avatar" id="active-profile-badge" title="Hồ sơ đang xem" onclick="openBouquetModal(0)">
+          🌸
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Billboard -->
+    <header class="hero" id="hero-sec">
+      <div class="hero-bg"></div>
+      <div class="hero-vignette"></div>
+      <canvas id="hero-petals"></canvas>
+
+      <div class="hero-content">
+        <div class="netflix-series-badge">
+          <strong>L</strong> BỘ SƯU TẬP ĐẶC BIỆT NGÀY 20/10
+        </div>
+        <h1 class="hero-title" id="hero-greeting-title">
+          MÙA HOA HẠNH PHÚC: DÀNH TẶNG PHÁI ĐẸP
+        </h1>
+        <div class="hero-meta">
+          <span class="match-score">99.9% Phù hợp với bạn</span>
+          <span>20/10</span>
+          <span class="meta-badge">4K HDR</span>
+          <span class="meta-badge">Trọn Vẹn Yêu Thương</span>
+          <span class="top10-pill">TOP 1 HÔM NAY</span>
+        </div>
+        <p class="hero-desc">
+          Thay cho những bộ phim thường ngày, Loveflix hôm nay trình chiếu những bó hoa rực rỡ nhất. Hãy nhấn vào từng bó hoa bên dưới để mở khóa hiệu ứng dễ thương cùng lời chúc 20/10 chân thành dành riêng cho bạn!
+        </p>
+        <div class="hero-buttons">
+          <button class="btn-play" onclick="openBouquetModal(0)">
+            ▶ Mở Bó Hoa Chủ Đạo
+          </button>
+          <button class="btn-info" onclick="scrollToRow('row-trending')">
+            ⓘ Khám Phá 12 Bó Hoa
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bouquet Rows -->
+    <main class="rows-container">
+      <!-- Row 1: Trending Bouquets -->
+      <section class="row-section" id="row-trending">
+        <div class="row-header">
+          <h2 class="row-title">🔥 Xu Hướng Hôm Nay: Những Bó Hoa Rực Rỡ Nhất</h2>
+          <span class="row-explore">Nhấn vào hoa để mở lời chúc ❯</span>
+        </div>
+        <div class="row-slider" id="grid-trending"></div>
+      </section>
+
+      <!-- Row 2: Top 10 Ranked Bouquets -->
+      <section class="row-section" id="row-top10">
+        <div class="row-header">
+          <h2 class="row-title">👑 Top Bó Hoa Truyền Tải Yêu Thương Ngày 20/10</h2>
+          <span class="row-explore">Top thịnh hành tại Việt Nam ❯</span>
+        </div>
+        <div class="row-slider" id="grid-top10"></div>
+      </section>
+
+      <!-- Row 3: Sweet Collection -->
+      <section class="row-section" id="row-special">
+        <div class="row-header">
+          <h2 class="row-title">💖 Dành Riêng Cho Bạn: Hương Sắc & Lời Chúc Ngọt Ngào</h2>
+          <span class="row-explore">Mỗi bó hoa là một món quà ❯</span>
+        </div>
+        <div class="row-slider" id="grid-special"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>🌸 <strong>LOVEFLIX 20/10 EDITION</strong> — Giao diện lấy cảm hứng từ Netflix dành tặng một nửa thế giới xinh đẹp 🌸</p>
+      <p style="margin-top:6px;">Nhấn vào bất kỳ bó hoa nào để đón nhận những lời chúc tốt đẹp nhất.</p>
+    </footer>
+  </div>
+
+  <!-- ==========================================
+       4. CUTE ANIMATED WISH MODAL
+       ========================================== -->
+  <div class="modal-backdrop" id="wish-modal" onclick="handleBackdropClick(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <!-- Animated Top Stage -->
+      <div class="modal-hero">
+        <img src="" alt="Bouquet" class="modal-hero-img" id="modal-img" />
+        <div class="modal-hero-gradient"></div>
+
+        <!-- Cute Animated Floating Elements + Bouncing Flower -->
+        <div class="cute-floating-hearts" id="modal-floating-container"></div>
+        <div class="cute-animation-stage">
+          <div class="cute-bouquet-avatar" id="modal-cute-emoji">💐</div>
+        </div>
+
+        <div class="modal-hero-bottom">
+          <div>
+            <span class="modal-subtitle-badge" id="modal-meaning-badge">Biểu tượng của sự rạng rỡ</span>
+            <h2 class="modal-title" id="modal-title">BÓ HOA HỒNG ĐỎ KIÊU SA</h2>
+          </div>
+          <div class="hero-meta" style="margin-bottom: 0;">
+            <span class="match-score" id="modal-match">100% Yêu Thương</span>
+            <span class="meta-badge">20/10 Special</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wish Content Body -->
+      <div class="modal-body">
+        <div class="wish-letter-card">
+          <div class="wish-quote-mark">
+            <span>💌</span> Lời chúc 20/10 gửi đến bạn:
+          </div>
+          <p class="wish-content-text" id="modal-wish-text"></p>
+          <div class="wish-signature">— Gửi ngàn yêu thương nhân ngày 20/10 💖</div>
+        </div>
+
+        <div class="modal-actions-row">
+          <button class="btn-love-burst" onclick="triggerLoveConfetti()">
+            💝 Nhận Hoa & Bắn Pháo Hoa Tim
+          </button>
+          <button class="btn-next-wish" onclick="nextBouquetInModal()">
+            🌸 Xem Bó Hoa Tiếp Theo ➔
+          </button>
+        </div>
+
+        <!-- Netflix-style Episodes List -->
+        <div class="episodes-header">
+          <span>Các tập thông điệp đính kèm bó hoa này</span>
+          <span style="font-size:0.82rem; color:#999;">Mùa 20/10 • 3 Tập</span>
+        </div>
+        <div id="modal-episodes-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-notif" id="toast">
+    <span id="toast-text">🌸 Chúc mừng ngày Phụ nữ Việt Nam 20/10!</span>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT LOGIC & ANIMATIONS
+       ========================================== -->
+  <script>
+    // 1. DỮ LIỆU 12 BÓ HOA & LỜI CHÚC 20/10 Ý NGHĨA
+    const bouquets = [
+      {
+        id: 0,
+        title: "Hồng Đỏ nhung Kiêu Sa",
+        emoji: "🌹",
+        category: "trending",
+        match: "99% Phù hợp",
+        badge: "TOP 1",
+        meaning: "Biểu tượng của tình yêu nồng nhiệt & vẻ đẹp quyến rũ",
+        tags: ["Rạng rỡ", "Kiêu hãnh", "Hạnh phúc"],
+        img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80",
+        wish: "Chúc bạn một ngày 20/10 rực rỡ và kiêu hãnh như những đóa hồng nhung đỏ thắm! Mong bạn luôn giữ vững ngọn lửa nhiệt huyết trong tim, luôn được nâng niu, trân trọng và yêu thương vô điều kiện không chỉ hôm nay mà suốt 365 ngày trong năm.",
+        episodes: [
+          { icon: "🌹", title: "Tập 1: Nụ cười tỏa nắng", desc: "Nụ cười của bạn chính là điều làm thế giới này trở nên ấm áp hơn mỗi ngày." },
+          { icon: "✨", title: "Tập 2: Tự tin tỏa sáng", desc: "Hãy luôn tự hào về chính mình — một phiên bản độc nhất và tuyệt vời." },
+          { icon: "💖", title: "Tập 3: Ngập tràn yêu thương", desc: "Mọi điều ngọt ngào và may mắn nhất đều xứng đáng thuộc về bạn." }
+        ]
+      },
+      {
+        id: 1,
+        title: "Tulip Hồng Dịu Dàng",
+        emoji: "🌷",
+        category: "trending",
+        match: "98% Phù hợp",
+        badge: "HOT",
+        meaning: "Sự thanh lịch, ngọt ngào và khởi đầu tràn đầy hy vọng",
+        tags: ["Ngọt ngào", "Thanh xuân", "Dịu êm"],
+        img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=900&q=80",
+        wish: "Gửi tặng bạn bó hoa Tulip hồng thanh tao nhân ngày 20/10! Chúc cho thanh xuân của bạn mãi tươi đẹp, tâm hồn luôn nhẹ nhàng như gió thu và mỗi sáng thức dậy đều có hàng ngàn lý do để mỉm cười thật tươi.",
+        episodes: [
+          { icon: "🌷", title: "Tập 1: Dịu dàng như sương mai", desc: "Giữ mãi nét duyên dáng và sự ấm áp làm tan chảy mọi trái tim." },
+          { icon: "🎀", title: "Tập 2: Mọi ước mơ thành hiện thực", desc: "Những dự định bạn ấp ủ sẽ sớm nở hoa rực rỡ." },
+          { icon: "🌈", title: "Tập 3: Bình yên sau mọi bộn bề", desc: "Luôn có những khoảng trời dịu êm dành riêng cho bạn nghỉ ngơi." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Hướng Dương Tỏa Nắng",
+        emoji: "🌻",
+        category: "trending",
+        match: "100% Năng lượng",
+        badge: "MỚI",
+        meaning: "Nguồn năng lượng tích cực, lạc quan và vươn tới ánh mặt trời",
+        tags: ["Tích cực", "Rạng ngời", "Thành công"],
+        img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=900&q=80",
+        wish: "Nhân ngày Phụ nữ Việt Nam 20/10, chúc bạn luôn rực rỡ và tràn đầy sức sống như đóa hoa Hướng Dương! Dù ở bất cứ đâu, mong bạn luôn hướng về phía ánh sáng của niềm vui, gặt hái thật nhiều thành công và truyền cảm hứng tuyệt vời đến mọi người.",
+        episodes: [
+          { icon: "🌻", title: "Tập 1: Năng lượng mặt trời", desc: "Sự hiện diện của bạn luôn mang lại bầu không khí tươi vui." },
+          { icon: "🏆", title: "Tập 2: Vững bước thành công", desc: "Mọi nỗ lực học tập và làm việc của bạn đều kết trái ngọt." },
+          { icon: "☀️", title: "Tập 3: Luôn nhìn về phía trước", desc: "Bất kỳ thử thách nào cũng không thể làm phai đi nụ cười của bạn." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Baby Trắng Tinh Khôi",
+        emoji: "🤍",
+        category: "trending",
+        match: "97% Phù hợp",
+        badge: "ĐẶC BIỆT",
+        meaning: "Sự trong trẻo, thuần khiết và những điều giản dị bền lâu",
+        tags: ["Tinh khôi", "Trong trẻo", "An nhiên"],
+        img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=900&q=80",
+        wish: "Như hàng ngàn đóa hoa Baby trắng nhỏ xinh kết thành bầu trời đầy sao, chúc bạn ngày 20/10 ngập tràn những niềm vui giản dị mà sâu sắc. Mong trái tim bạn mãi giữ được sự hồn nhiên, trong trẻo và luôn tìm thấy hạnh phúc trong từng khoảnh khắc.",
+        episodes: [
+          { icon: "☁️", title: "Tập 1: Tâm hồn nhẹ tựa mây bay", desc: "Chẳng điều gì có thể làm vướng bận sự bình yên trong lòng bạn." },
+          { icon: "🌟", title: "Tập 2: Ngàn vì sao lấp lánh", desc: "Mỗi ngày trôi qua là một kỷ niệm đẹp đáng nhớ." },
+          { icon: "🕊️", title: "Tập 3: Hạnh phúc thuần khiết", desc: "Luôn được bao bọc bởi những người chân thành và tử tế." }
+        ]
+      },
+      {
+        id: 4,
+        title: "Mẫu Đơn Phú Quý",
+        emoji: "🌺",
+        category: "top10",
+        rank: 1,
+        match: "99% Phù hợp",
+        badge: "TOP 1",
+        meaning: "Vẻ đẹp vương giả, viên mãn và khí chất cao quý",
+        tags: ["Quý phái", "Viên mãn", "Tự hào"],
+        img: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=900&q=80",
+        wish: "Dành tặng bạn đóa Mẫu Đơn — nữ hoàng của các loài hoa! Chúc bạn ngày 20/10 thật viên mãn, sung túc và tràn đầy kiêu hãnh. Hãy luôn sống như một nữ hoàng trong chính cuộc đời mình: độc lập, tự tin và tỏa hương theo cách riêng!",
+        episodes: [
+          { icon: "👑", title: "Tập 1: Khí chất nữ hoàng", desc: "Vẻ đẹp trí tuệ và lòng nhân hậu tạo nên sức hút riêng của bạn." },
+          { icon: "💎", title: "Tập 2: Cuộc sống viên mãn", desc: "Sức khỏe dồi dào, may mắn gõ cửa và niềm vui nối tiếp niềm vui." },
+          { icon: "🥂", title: "Tập 3: Tận hưởng từng phút giây", desc: "Yêu chiều bản thân nhiều hơn vì bạn hoàn toàn xứng đáng." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Cẩm Tú Cầu Chân Thành",
+        emoji: "💠",
+        category: "top10",
+        rank: 2,
+        match: "98% Phù hợp",
+        badge: "TOP 2",
+        meaning: "Lòng biết ơn sâu sắc và những cảm xúc chân thành nhất",
+        tags: ["Biết ơn", "Trọn vẹn", "Gắn kết"],
+        img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
+        wish: "Những cánh hoa Cẩm Tú Cầu đan xen vào nhau như lời cảm ơn chân thành nhất gửi tới bạn nhân ngày 20/10. Cảm ơn bạn vì đã luôn dịu dàng, kiên cường và mang đến thật nhiều điều tốt đẹp cho cuộc sống này. Chúc bạn mãi hạnh phúc!",
+        episodes: [
+          { icon: "💙", title: "Tập 1: Lời cảm ơn từ trái tim", desc: "Thế giới thật may mắn vì có sự hiện diện tuyệt vời của bạn." },
+          { icon: "🌸", title: "Tập 2: Trọn vẹn từng khoảnh khắc", desc: "Mỗi mùa đi qua đều để lại những dấu ấn ngọt ngào." },
+          { icon: "🤗", title: "Tập 3: Cái ôm ấm áp", desc: "Gửi đến bạn ngàn cái ôm tiếp thêm động lực mỗi ngày." }
+        ]
+      },
+      {
+        id: 6,
+        title: "Cúc Họa Mi Trong Trẻo",
+        emoji: "🌼",
+        category: "top10",
+        rank: 3,
+        match: "97% Phù hợp",
+        badge: "TOP 3",
+        meaning: "Sự mộc mạc, kiên cường và sức sống bền bỉ",
+        tags: ["Thanh lịch", "Tươi mới", "Bình dị"],
+        img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+        wish: "Mùa tháng 10 về mang theo những đóa Cúc Họa Mi dịu dàng. Chúc bạn một ngày 20/10 thật thư thái, tâm hồn luôn trẻ trung phơi phới và tìm thấy niềm vui lấp lánh trong từng điều nhỏ bé nhất quanh mình!",
+        episodes: [
+          { icon: "🌼", title: "Tập 1: Khúc giao mùa tháng 10", desc: "Gió thu dịu mát mang đến những điều lành cho bạn." },
+          { icon: "🍃", title: "Tập 2: Sức sống kiên cường", desc: "Dịu dàng bên ngoài nhưng vô cùng mạnh mẽ bên trong." },
+          { icon: "☕", title: "Tập 3: Buổi sáng an lành", desc: "Mỗi ngày mới đều bắt đầu bằng sự hứng khởi và tiếng cười." }
+        ]
+      },
+      {
+        id: 7,
+        title: "Oải Hương Bình Yên (Lavender)",
+        emoji: "💜",
+        category: "top10",
+        rank: 4,
+        match: "99% Thư giãn",
+        badge: "TOP 4",
+        meaning: "Sự bình yên, may mắn và hương thơm chữa lành tâm hồn",
+        tags: ["Chữa lành", "Lãng mạn", "Bình an"],
+        img: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=80",
+        wish: "Gửi đến bạn hương sắc tím mộng mơ của cánh đồng hoa Lavender nhân ngày 20/10! Chúc bạn luôn có một tâm hồn bình yên, ngủ thật ngon mỗi tối, gác lại mọi âu lo và luôn gặp thật nhiều điều may mắn trên hành trình phía trước.",
+        episodes: [
+          { icon: "💜", title: "Tập 1: Hương thơm dịu nhẹ", desc: "Xua tan mọi mệt mỏi sau những giờ học tập và làm việc." },
+          { icon: "🌙", title: "Tập 2: Những giấc mơ đẹp", desc: "Luôn an giấc và thức dậy với tinh thần sảng khoái nhất." },
+          { icon: "🍀", title: "Tập 3: May mắn đồng hành", desc: "Bình an và thuận lợi trên mọi chặng đường bạn đi." }
+        ]
+      },
+      {
+        id: 8,
+        title: "Hồng Pastel Ngọt Ngào",
+        emoji: "🎀",
+        category: "special",
+        match: "100% Đáng yêu",
+        badge: "SWEET",
+        meaning: "Sự dịu dàng, mộng mơ và niềm hạnh phúc ngọt ngào",
+        tags: ["Ngọt ngào", "Đáng yêu", "Mộng mơ"],
+        img: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=900&q=80",
+        wish: "Chúc cô gái tuyệt vời đang đọc dòng chữ này có một ngày 20/10 ngọt ngào như kẹo bông gòn và xinh đẹp như bó Hồng Pastel! Hãy luôn yêu thương bản thân, giữ mãi nét đáng yêu và đón nhận thật nhiều món quà bất ngờ hôm nay nhé!",
+        episodes: [
+          { icon: "🍬", title: "Tập 1: Ngọt ngào hơn kẹo", desc: "Cuộc sống luôn dành tặng bạn những hương vị tuyệt vời nhất." },
+          { icon: "🎈", title: "Tập 2: Bay cao ước mơ", desc: "Tự do theo đuổi đam mê và những điều làm bạn hạnh phúc." },
+          { icon: "💝", title: "Tập 3: Luôn được cưng chiều", desc: "Bạn xứng đáng với sự dịu dàng nhất của thế gian." }
+        ]
+      },
+      {
+        id: 9,
+        title: "Anh Đào Mùa Xuân",
+        emoji: "🌸",
+        category: "special",
+        match: "98% Phù hợp",
+        badge: "ROMANTIC",
+        meaning: "Thanh xuân tươi đẹp, sức sống mới và niềm hy vọng",
+        tags: ["Thanh xuân", "Rạng rỡ", "Tươi trẻ"],
+        img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=900&q=80",
+        wish: "Chúc cho tâm hồn bạn lúc nào cũng như mùa hoa Anh Đào nở rộ! Ngày 20/10 thật nhiều niềm vui, nhan sắc thăng hạng, học tập hay công việc đều suôn sẻ và luôn có những người thương yêu đồng hành bên cạnh.",
+        episodes: [
+          { icon: "🌸", title: "Tập 1: Mãi tuổi thanh xuân", desc: "Trái tim nhiệt huyết giúp bạn luôn trẻ trung và yêu đời." },
+          { icon: "📸", title: "Tập 2: Lưu giữ khoảnh khắc", desc: "Hôm nay hãy chụp thật nhiều bức ảnh xinh đẹp nhé!" },
+          { icon: "🎉", title: "Tập 3: Ngày hội của phái đẹp", desc: "Tận hưởng trọn vẹn ngày đặc biệt dành riêng cho bạn." }
+        ]
+      },
+      {
+        id: 10,
+        title: "Cẩm Chướng Ấm Áp",
+        emoji: "🌺",
+        category: "special",
+        match: "99% Ý nghĩa",
+        badge: "LOVE",
+        meaning: "Sự ngưỡng mộ, tình cảm gia đình ấm áp và lòng kính trọng",
+        tags: ["Ấm áp", "Yêu thương", "Trân quý"],
+        img: "https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=900&q=80",
+        wish: "Bó hoa Cẩm Chướng đỏ hồng thay lời tri ân sâu sắc gửi đến những người mẹ, người chị, người bạn gái tuyệt vời nhân ngày 20/10. Chúc bạn luôn dồi dào sức khỏe, bình an trong tâm hồn và ngập tràn tiếng cười bên những người thân yêu!",
+        episodes: [
+          { icon: "🏡", title: "Tập 1: Hơi ấm yêu thương", desc: "Gia đình và bạn bè luôn tự hào và yêu quý bạn." },
+          { icon: "❤️", title: "Tập 2: Sức khỏe vàng ngọc", desc: "Chúc bạn luôn khỏe mạnh, tràn đầy năng lượng mỗi ngày." },
+          { icon: "🌟", title: "Tập 3: Ngọn lửa giữ ấm", desc: "Cảm ơn bạn vì đã luôn lan tỏa sự ấm áp đến mọi người." }
+        ]
+      },
+      {
+        id: 11,
+        title: "Vườn Hoa Đa Sắc 20/10",
+        emoji: "💐",
+        category: "special",
+        match: "100% Hoàn hảo",
+        badge: "SPECIAL",
+        meaning: "Sự hội tụ của muôn vàn lời chúc tốt đẹp nhất",
+        tags: ["Đa sắc", "Trọn vẹn", "Viên mãn"],
+        img: "https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=900&q=80",
+        wish: "Một bó hoa rực rỡ sắc màu kết tinh mọi điều tuyệt vời nhất dành tặng bạn ngày 20/10: Chúc bạn Đỏ thắm may mắn, Vàng tươi rạng rỡ, Hồng phấn ngọt ngào, Trắng trong bình yên và Tím biếc thủy chung! Happy Vietnamese Women's Day!",
+        episodes: [
+          { icon: "💐", title: "Tập 1: Đa sắc màu cuộc sống", desc: "Mỗi ngày của bạn là một bức tranh rực rỡ và sống động." },
+          { icon: "🎁", title: "Tập 2: Ngàn món quà bất ngờ", desc: "Đón nhận thật nhiều hoa, quà và lời chúc ý nghĩa." },
+          { icon: "♾️", title: "Tập 3: Hạnh phúc 365 ngày", desc: "Không chỉ 20/10 mà mỗi ngày đều là ngày của phái đẹp!" }
+        ]
+      }
+    ];
+
+    let currentModalIndex = 0;
+
+    // 2. ÂM THANH NETFLIX "TA-DUM" BẰNG WEB AUDIO API (KHÔNG CẦN FILE MP3 NGOÀI)
+    function playNetflixTadumSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        // Drum Impact 1 ("TA")
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(110, now);
+        osc1.frequency.exponentialRampToValueAtTime(38, now + 0.28);
+        gain1.gain.setValueAtTime(0.9, now);
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.32);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.35);
+
+        // Drum Impact 2 +Rich Chord ("DUMMMM")
+        const chordNotes = [65.41, 130.81, 196.00, 261.63, 329.63, 392.00]; // C major rich cinematic spread
+        chordNotes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = idx < 2 ? 'triangle' : 'sawtooth';
+          osc.frequency.setValueAtTime(freq * 0.98, now + 0.32);
+          osc.frequency.exponentialRampToValueAtTime(freq, now + 0.55);
+
+          // Lowpass filter for warm cinematic brass/strings feel
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(1600, now + 0.32);
+          filter.frequency.exponentialRampToValueAtTime(400, now + 3.2);
+
+          gain.gain.setValueAtTime(0.001, now + 0.32);
+          gain.gain.linearRampToValueAtTime(0.22 / (idx * 0.4 + 1), now + 0.42);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 3.3);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now + 0.32);
+          osc.stop(now + 3.4);
+        });
+      } catch (e) {
+        console.log("Web Audio API skipped:", e);
+      }
+    }
+
+    // Âm thanh chuông lấp lánh dễ thương khi mở bó hoa
+    function playCuteChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const startTime = ctx.currentTime + i * 0.08;
+          gain.gain.setValueAtTime(0.15, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.65);
+        });
+      } catch (e) {}
+    }
+
+    // 3. VẼ HIỆU ỨNG DẢI ÁNH SÁNG SPECTRUM NETFLIX INTRO
+    function drawIntroStreaks() {
+      const canvas = document.getElementById('intro-streaks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#e50914', '#ff4d8d', '#ff0055', '#ffd166', '#ff758f', '#ffffff', '#c9184a'];
+      const streaks = Array.from({ length: 85 }, () => ({
+        x: Math.random() * canvas.width,
+        w: Math.random() * 14 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.75 + 0.25,
+        speed: Math.random() * 6 + 2
+      }));
+
+      let frame = 0;
+      function animateStreaks() {
+        frame++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'lighter';
+
+        streaks.forEach(s => {
+          const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          grad.addColorStop(0, 'transparent');
+          grad.addColorStop(0.5, s.color);
+          grad.addColorStop(1, 'transparent');
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = s.alpha;
+          ctx.fillRect(s.x, 0, s.w, canvas.height);
+        });
+
+        if (frame < 180) {
+          requestAnimationFrame(animateStreaks);
+        }
+      }
+      animateStreaks();
+    }
+
+    // 4. KHỞI CHẠY TRẢI NGHIỆM NETFLIX INTRO -> MÀN HÌNH CHÍNH
+    function startNetflixExperience(profileName) {
+      const gate = document.getElementById('profile-gate');
+      const intro = document.getElementById('netflix-intro');
+      const app = document.getElementById('app');
+
+      if (profileName) {
+        document.getElementById('hero-greeting-title').textContent =
+          `MÙA HOA 20/10: DÀNH TẶNG ${profileName.toUpperCase()}`;
+      }
+
+      gate.classList.add('hidden');
+      intro.classList.add('active');
+
+      // Phát âm thanh Ta-dum + hiệu ứng sọc sáng
+      playNetflixTadumSound();
+      drawIntroStreaks();
+
+      setTimeout(() => {
+        intro.classList.remove('active');
+        app.classList.add('visible');
+      }, 3550);
+    }
+
+    function replayIntro() {
+      const intro = document.getElementById('netflix-intro');
+      const app = document.getElementById('app');
+      app.classList.remove('visible');
+
+      // Reset animation bằng cách clone node
+      const logoWrap = intro.querySelector('.intro-logo-wrap');
+      const newLogo = logoWrap.cloneNode(true);
+      logoWrap.parentNode.replaceChild(newLogo, logoWrap);
+
+      const streaks = document.getElementById('intro-streaks');
+      const newStreaks = streaks.cloneNode(true);
+      streaks.parentNode.replaceChild(newStreaks, streaks);
+
+      intro.classList.add('active');
+      playNetflixTadumSound();
+      drawIntroStreaks();
+
+      setTimeout(() => {
+        intro.classList.remove('active');
+        app.classList.add('visible');
+      }, 3550);
+    }
+
+    // 5. RENDER CÁC HÀNG BÓ HOA (CAROUSELS)
+    function createBouquetCardHTML(item) {
+      return `
+        <div class="bouquet-card" onclick="openBouquetModal(${item.id})">
+          <div class="card-thumb-wrap">
+            <img class="card-thumb" src="${item.img}" alt="${item.title}" loading="lazy" />
+            <span class="card-badge-corner">${item.badge}</span>
+            <span class="card-episode-tag">${item.emoji} Lời chúc 20/10</span>
+          </div>
+          <div class="card-body">
+            <div class="card-actions">
+              <div class="action-left">
+                <div class="circle-btn play-mini" title="Mở lời chúc">▶</div>
+                <div class="circle-btn" title="Yêu thích">❤️</div>
+                <div class="circle-btn" title="Tặng hoa">💐</div>
+              </div>
+              <div class="circle-btn" title="Chi tiết">⌄</div>
+            </div>
+            <h3 class="card-title">${item.emoji} ${item.title}</h3>
+            <div class="card-submeta">
+              <span class="match-score">${item.match}</span>
+              <span class="meta-badge">HD</span>
+              <span>20/10</span>
+            </div>
+            <div class="card-tags">
+              ${item.tags.map(t => `<span>${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAllRows() {
+      const trendingGrid = document.getElementById('grid-trending');
+      const top10Grid = document.getElementById('grid-top10');
+      const specialGrid = document.getElementById('grid-special');
+
+      trendingGrid.innerHTML = bouquets
+        .filter(b => b.category === 'trending')
+        .map(b => createBouquetCardHTML(b))
+        .join('');
+
+      top10Grid.innerHTML = bouquets
+        .filter(b => b.category === 'top10')
+        .map(b => `
+          <div class="top10-card-wrap">
+            <div class="top10-Rank">${b.rank}</div>
+            ${createBouquetCardHTML(b)}
+          </div>
+        `)
+        .join('');
+
+      specialGrid.innerHTML = bouquets
+        .filter(b => b.category === 'special')
+        .map(b => createBouquetCardHTML(b))
+        .join('');
+    }
+
+    // 6. MỞ MODAL BÓ HOA VỚI ANIMATION DỄ THƯƠNG & LỜI CHÚC
+    function openBouquetModal(id) {
+      currentModalIndex = id;
+      const item = bouquets.find(b => b.id === id) || bouquets[0];
+
+      document.getElementById('modal-img').src = item.img;
+      document.getElementById('modal-cute-emoji').textContent = item.emoji;
+      document.getElementById('modal-meaning-badge').textContent = item.meaning;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-match').textContent = item.match;
+      document.getElementById('modal-wish-text').textContent = item.wish;
+
+      // Render các tập yêu thương
+      const epContainer = document.getElementById('modal-episodes-list');
+      epContainer.innerHTML = item.episodes.map((ep, idx) => `
+        <div class="episode-item" onclick="triggerLoveConfetti()">
+          <div class="ep-num">${idx + 1}</div>
+          <div class="ep-icon">${ep.icon}</div>
+          <div class="ep-info">
+            <div class="ep-title">${ep.title}</div>
+            <div class="ep-desc">${ep.desc}</div>
+          </div>
+          <div class="ep-duration">20:10</div>
+        </div>
+      `).join('');
+
+      // Tạo hiệu ứng cánh hoa & trái tim bay lên trong Modal
+      spawnCuteFloatingParticles(item.emoji);
+
+      // Mở modal
+      const modal = document.getElementById('wish-modal');
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      playCuteChime();
+      triggerSoftConfetti();
+    }
+
+    function spawnCuteFloatingParticles(mainEmoji) {
+      const container = document.getElementById('modal-floating-container');
+      container.innerHTML = '';
+      const symbols = [mainEmoji, '💖', '🌸', '✨', '🌷', '💕', '🦋'];
+
+      for (let i = 0; i < 18; i++) {
+        const span = document.createElement('span');
+        span.className = 'floating-item';
+        span.textContent = symbols[i % symbols.length];
+        span.style.left = `${Math.random() * 94 + 3}%`;
+        span.style.animationDelay = `${Math.random() * 3.2}s`;
+        span.style.animationDuration = `${3.2 + Math.random() * 2.2}s`;
+        span.style.fontSize = `${1.1 + Math.random() * 1.1}rem`;
+        container.appendChild(span);
+      }
+    }
+
+    function nextBouquetInModal() {
+      const nextId = (currentModalIndex + 1) % bouquets.length;
+      openBouquetModal(nextId);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('wish-modal');
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'wish-modal') {
+        closeModal();
+      }
+    }
+
+    // 7. HIỆU ỨNG PHÁO HOA TIM & CÁNH HOA (CANVAS CONFETTI)
+    function triggerSoftConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 45,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#ff4d8d', '#e50914', '#ffd166', '#ffb3c6', '#ffffff']
+        });
+      }
+    }
+
+    function triggerLoveConfetti() {
+      playCuteChime();
+      if (typeof confetti === 'function') {
+        const duration = 1800;
+        const end = Date.now() + duration;
+
+        (function frame() {
+          confetti({
+            particleCount: 6,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0, y: 0.65 },
+            colors: ['#ff4d8d', '#e50914', '#ffd166', '#ff8fab']
+          });
+          confetti({
+            particleCount: 6,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1, y: 0.65 },
+            colors: ['#ff4d8d', '#e50914', '#ffd166', '#ff8fab']
+          });
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
+      showToast('💖 Đã gửi ngàn lời chúc 20/10 ngọt ngào nhất đến bạn!');
+    }
+
+    // 8. HIỆU ỨNG CÁNH HOA RƠI NHẸ TRÊN HERO BANNER
+    function initHeroPetals() {
+      const canvas = document.getElementById('hero-petals');
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = window.innerWidth);
+      let h = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const petals = Array.from({ length: 28 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 4 + 2,
+        vx: Math.random() * 0.8 - 0.2,
+        vy: Math.random() * 0.9 + 0.4,
+        alpha: Math.random() * 0.55 + 0.2,
+        color: Math.random() > 0.5 ? '#ff8fab' : '#ffd166'
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        petals.forEach(p => {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y > h) {
+            p.y = -10;
+            p.x = Math.random() * w;
+          }
+          if (p.x > w) p.x = 0;
+          if (p.x < 0) p.x = w;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // 9. TIỆN ÍCH CUỘN TRANG, NAVBAR & TOAST
+    function scrollToRow(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 40) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Khởi tạo giao diện
+    renderAllRows();
+    initHeroPetals();
+  </script>
+</body>
+</html>
